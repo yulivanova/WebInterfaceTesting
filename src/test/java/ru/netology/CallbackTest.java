@@ -1,23 +1,30 @@
 package ru.netology;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class CallbackTest {
     private WebDriver driver;
+    private static ChromeOptions options;
 
     @BeforeAll
     static void setUpAll() {
+        options = new ChromeOptions();
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--headless");
         System.setProperty("webdriver.chrome.driver", "./driver/win/chromedriver.exe");
     }
 
     @BeforeEach
     void setUp() {
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
     }
 
     @AfterEach
@@ -27,12 +34,38 @@ public class CallbackTest {
     }
 
     @Test
-    void shouldTestV1() throws InterruptedException {
+    public void shouldTestHappyPath1() {
         driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("span[data-test-id=name] input")).sendKeys("Иванова Анна");
+        driver.findElement(By.cssSelector("span[data-test-id=phone] input")).sendKeys("+79333333333");
+        driver.findElement(By.cssSelector("label[data-test-id=agreement]")).click();
+        driver.findElement(By.className("button")).click();
+        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        String actual = driver.findElement(By.cssSelector("p[data-test-id=order-success]")).getText().trim();
+        assertEquals(expected, actual);
     }
 
     @Test
-    void shouldTestSomething() {
-        throw new UnsupportedOperationException();
+    public void shouldTestHappyPath2() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("span[data-test-id=name] input")).sendKeys("Мамин-Сибиряк Дмитрий");
+        driver.findElement(By.cssSelector("span[data-test-id=phone] input")).sendKeys("+79333333333");
+        driver.findElement(By.cssSelector("label[data-test-id=agreement]")).click();
+        driver.findElement(By.className("button")).click();
+        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        String actual = driver.findElement(By.cssSelector("p[data-test-id=order-success]")).getText().trim();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldTestHappyPath3() {
+        driver.get("http://localhost:9999");
+        driver.findElement(By.cssSelector("span[data-test-id=name] input")).sendKeys("Орудж бей Байат");
+        driver.findElement(By.cssSelector("span[data-test-id=phone] input")).sendKeys("+79333333333");
+        driver.findElement(By.cssSelector("label[data-test-id=agreement]")).click();
+        driver.findElement(By.className("button")).click();
+        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        String actual = driver.findElement(By.cssSelector("p[data-test-id=order-success]")).getText().trim();
+        assertEquals(expected, actual);
     }
 }
