@@ -6,29 +6,30 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import io.github.bonigarcia.wdm.WebDriverManager;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CallbackTest {
-        private WebDriver driver;
+    private WebDriver driver;
 
-        @BeforeAll
-        static void setUpAll() {
-            WebDriverManager.chromedriver().setup();
-        }
+    @BeforeAll
+    static void setUpAll() {
+        WebDriverManager.chromedriver().setup();
+    }
 
-        @BeforeEach
-        void setup() {
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--no-sandbox");
-            options.addArguments("--headless");
-            driver = new ChromeDriver(options);
-        }
+    @BeforeEach
+    void setup() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
+    }
 
-        @AfterEach
-        void tearDown() {
-            driver.quit();
-        }
+    @AfterEach
+    void tearDown() {
+        driver.quit();
+    }
 
     @Test
     public void shouldTestHappyPath1() {
@@ -113,7 +114,6 @@ public class CallbackTest {
         String actual = driver.findElement(By.cssSelector(".input_invalid[data-test-id=name] span.input__sub")).getText().trim();
         assertEquals(expected, actual);
     }
-
 
 
     @Test
